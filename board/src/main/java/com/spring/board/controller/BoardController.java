@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 
 import com.spring.board.dto.BoardDto;
 import com.spring.board.service.BoardService;
@@ -49,33 +50,38 @@ public class BoardController {
 	/* 상세조회 */
 	
 	@GetMapping("/post/{no}")
-	public String detail(@PathVariable("no") Long no, Model model) {
-		BoardDto boardDTO = boardService.getPost(no);
-		model.addAttribute("boardDto", boardDTO);
-		return "board/detail.html";
-	}
+    public String detail(@PathVariable("no") Long no, Model model) {
+        BoardDto boardDTO = boardService.getPost(no);
+
+        model.addAttribute("boardDto", boardDTO);
+        return "board/detail.html";
+    }
 	
 	
 	/* 글 수정 */
 	@GetMapping("/post/edit/{no}")
-	public String edit(@PathVariable("no") Long no, Model model) {
-		BoardDto boardDTO = boardService.getPost(no);
-		model.addAttribute("boardDto", boardDTO);
-		return "board/update.html";
-	}
-	
-	@PostMapping("/post/edit/{no}")
-	public String update(BoardDto boardDTO) {
-		boardService.savePost(boardDTO);
-		return "redirect:/";
-	}
+    public String edit(@PathVariable("no") Long no, Model model) {
+        BoardDto boardDTO = boardService.getPost(no);
+
+        model.addAttribute("boardDto", boardDTO);
+        return "board/update.html";
+    }
+
+    @PutMapping("/post/edit/{no}")
+    public String update(BoardDto boardDTO) {
+        boardService.savePost(boardDTO);
+
+        return "redirect:/";
+    }
 	
 	
 	/* 삭제 */
 	@DeleteMapping("/post/{no}")
-	public String delete(@PathVariable("no") Long no) {
-		boardService.deletePost(no);
-		return "redirect:/";
-	}
+    public String delete(@PathVariable("no") Long no) {
+        boardService.deletePost(no);
+
+        return "redirect:/";
+    }
+
 	
 }

@@ -8,7 +8,7 @@
 
 <h2 th:text="${boardDto.title}"></h2>
 <p th:inline="text">작성일 : [[${#temporals.format(boardDto.createdDate, 'yyyy-MM-dd HH:mm')}]]</p>
-<!-- th:text를 사용하면, 태그 사이에 작성한 내용은 사라지고 th:text 값으로 덮어씌어지기 때문에 th:inline 를 사용하며, 변수는 [[ ${ } ]] 으로 표기 -->
+
 <p th:text="${boardDto.content}"></p>
 
 <!-- 수정/삭제 -->
