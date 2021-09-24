@@ -4,7 +4,9 @@ import java.util.List;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.spring.board.dto.BoardDto;
@@ -18,6 +20,8 @@ public class BoardController {
 
 	private BoardService boardService;
 	
+	/* 리스트 */
+	
 	@GetMapping("/")
 	public String list(Model model) {
 		List<BoardDto> boardList = boardService.getBoardlist();
@@ -25,6 +29,9 @@ public class BoardController {
 		model.addAttribute("boardList", boardList);
 		return "board/list.html";
 	}
+	
+	
+	/* 글쓰기 */
 	
 	@GetMapping("/post")
 	public String write() {
@@ -39,6 +46,36 @@ public class BoardController {
 	}
 	
 	
+	/* 상세조회 */
 	
+	@GetMapping("/post/{no}")
+	public String detail(@PathVariable("no") Long no, Model model) {
+		BoardDto boardDTO = boardService.getPost(no);
+		model.addAttribute("boardDto", boardDTO);
+		return "board/detail.html";
+	}
+	
+	
+	/* 글 수정 */
+	@GetMapping("/post/edit/{no}")
+	public String edit(@PathVariable("no") Long no, Model model) {
+		BoardDto boardDTO = boardService.getPost(no);
+		model.addAttribute("boardDto", boardDTO);
+		return "board/update.html";
+	}
+	
+	@PostMapping("/post/edit/{no}")
+	public String update(BoardDto boardDTO) {
+		boardService.savePost(boardDTO);
+		return "redirect:/";
+	}
+	
+	
+	/* 삭제 */
+	@DeleteMapping("/post/{no}")
+	public String delete(@PathVariable("no") Long no) {
+		boardService.deletePost(no);
+		return "redirect:/";
+	}
 	
 }

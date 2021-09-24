@@ -2,6 +2,7 @@ package com.spring.board.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -44,4 +45,28 @@ public class BoardService {
         return boardDtoList;
     }
 	
+	@Transactional
+	public BoardDto getPost(Long id) {
+		Optional<BoardEntity> boardEntityWrapper = boardRepository.findById(id);
+		BoardEntity boardEntity = boardEntityWrapper.get();
+		
+		/*
+		 * findById() PK 값을 where 조건으로 하여, 데이터를 가져오기 위한 메서드이며, JpaRepository 인터페이스에서
+		 * 정의되어 있음 반환 값은 Optional 타입인데, 엔티티를 빼오려면 boardEntityWrapper.get(); 이렇게 get() 메서드를 사용해서 가져옴
+		 */
+		
+		BoardDto boardDTO = BoardDto.builder()
+				.id(boardEntity.getId())
+				.title(boardEntity.getTitle())
+                .content(boardEntity.getContent())
+                .writer(boardEntity.getWriter())
+                .createdDate(boardEntity.getCreatedDate())
+                .build();
+		return boardDTO;
+	}
+	
+	@Transactional
+	public void deletePost(Long id) {
+		boardRepository.deleteById(id);
+	}
 }
